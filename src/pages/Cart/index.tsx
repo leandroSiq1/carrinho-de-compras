@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { api } from '../../services/api';
 import {
   MdDelete,
   MdAddCircleOutline,
@@ -19,45 +18,32 @@ interface Product {
   amount: number;
 }
 
-
 const Cart = (): JSX.Element => {
   const { cart, removeProduct, updateProductAmount } = useCart();
 
   const cartFormatted = cart.map(product => ({
-    // TODO
     ...product,
     priceFormatted: formatPrice(product.price),
-    subTotal: product.price * product.amount,
+    subTotal: formatPrice(product.price * product.amount),
   }));
   
   const total =
     formatPrice(
       cartFormatted.reduce((sumTotal, product) => {
-        // TODO
         sumTotal += (product.price * product.amount);
         return sumTotal;
       }, 0)
     )
 
   function handleProductIncrement(product: Product) {
-    // TODO
-    const productId = product.id;
-    const amount = product.amount + 1;
-
-    updateProductAmount({ productId, amount });
+    updateProductAmount({ productId: product.id, amount: product.amount + 1});
   }
 
   function handleProductDecrement(product: Product) {
-    // TODO
-    const productId = product.id;
-
-    const amount = product.amount > 1 ? product.amount - 1 : product.amount;
-
-    updateProductAmount({ productId, amount });
+    updateProductAmount({ productId: product.id, amount: product.amount - 1 });
   }
 
   async function handleRemoveProduct(productId: number) {
-    // TODO
     removeProduct(productId);
   }
 
@@ -81,7 +67,7 @@ const Cart = (): JSX.Element => {
               </td>
               <td>
                 <strong>{product.title}</strong>
-                <span>{formatPrice(product.price)}</span>
+                <span>{product.priceFormatted}</span>
               </td>
               <td>
                 <div>
